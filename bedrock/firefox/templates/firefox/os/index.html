@@ -60,6 +60,7 @@
 {% block content %}
 <nav id="side-nav" role="navigation">
   <ul>
+    <li><a class="nav" href="#every-moment" title="{{_('Firefox OS')}}">{{_('Firefox OS')}}</a></li>
     <li><a class="nav" href="#adapt1" title="{{_('Adaptive App Search')}}">{{_('The Adaptive Phone')}}</a></li>
     <li><a class="nav" href="#have-it-all" title="{{_('Features')}}">{{_('The Features')}}</a></li>
     <li><a class="nav" href="#mission" title="{{_('Mission')}}">{{_('The Mission')}}</a></li>
@@ -76,7 +77,7 @@
 <div id="get-firefox-os">
   <!--<span id="keep-scrolling"></span>-->
 
-  <div id="adaptive-wrapper">
+  <div class="item-wrapper" id="every-moment">
     <div class="item phone-item" id="phone-item-intro">
       <div class="phone-wrapper" id="phone-wrapper-intro">
         <div class="phone"></div>
@@ -90,56 +91,40 @@
       </div>
     </div>
 
-    <div class="item phone-item" id="phone-item-soccer">
-      <div class="phone-wrapper" id="phone-wrapper-soccer">
-        <div class="phone"></div>
-        <div id="screen-soccer" class="screen-wrapper">
-          <div class="screen screen-soccer"></div>
-        </div>
-        <div id="fox-wrapper-soccer" class="fox-wrapper">
-          <div class="fox"></div>
-          <div class="tail"></div>
-        </div>
-      </div>
-    </div>
+    <div id="intro-bg-a" class="intro-bg bg-birthday"></div>
 
-    <div class="item phone-item" id="phone-item-cafe">
-      <div class="phone-wrapper" id="phone-wrapper-cafe">
-        <div class="phone"></div>
-        <div id="screen-cafe" class="screen-wrapper">
-          <div class="screen screen-cafe"></div>
+    <div class="item">
+      <section class="content">
+        {# L10n: The line break in this headline is presentational. Place the break wherever it seems best for your locale, or omit it if it isn't needed. #}
+        <h2>{{_('Make every <br>moment count')}}</h2>
+        <p>{{_('Your needs change from one moment to the next. That’s why Firefox OS does the same. It gives you the power to live every moment to its fullest and participate in a better world.')}}</p>
+        <div id="primary-cta-phone">
+          <p><a class="button-green" href="#get-phone">{{_('Get a Firefox OS smartphone today')}}</a></p>
+          <p class="small">{{_('Sign up for our monthly newsletter and get the latest on Firefox OS')}}</p>
+          <a class="button newsletter-signup-toggle" href="#email-form-wrapper">{{_('Sign me up')}}</a>
         </div>
-        <div id="fox-wrapper-cafe" class="fox-wrapper">
-          <div class="fox"></div>
-          <div class="tail"></div>
+        <div id="primary-cta-signup">
+          <p>{{_('Sign up for our monthly newsletter and get the latest on Firefox OS')}}</p>
+          <a class="button newsletter-signup-toggle wide" href="#email-form-wrapper">{{_('Sign me up')}}</a>
         </div>
-      </div>
+      </section>
     </div>
-    
+  </div>
+
+  <div id="adaptive-wrapper">
     <div id="adaptive-app-search">
       <div id="scenes">
-        <div class="item-wrapper" id="every-moment">
-          <div id="intro-bg-a" class="intro-bg bg-birthday"></div>
-
-          <div class="item">
-            <section class="content">
-              {# L10n: The line break in this headline is presentational. Place the break wherever it seems best for your locale, or omit it if it isn't needed. #}
-              <h2>{{_('Make every <br>moment count')}}</h2>
-              <p>{{_('Your needs change from one moment to the next. That’s why Firefox OS does the same. It gives you the power to live every moment to its fullest and participate in a better world.')}}</p>
-              <div id="primary-cta-phone">
-                <p><a class="button-green" href="#get-phone">{{_('Get a Firefox OS smartphone today')}}</a></p>
-                <p class="small">{{_('Sign up for our monthly newsletter and get the latest on Firefox OS')}}</p>
-                <a class="button newsletter-signup-toggle" href="#email-form-wrapper">{{_('Sign me up')}}</a>
-              </div>
-              <div id="primary-cta-signup">
-                <p>{{_('Sign up for our monthly newsletter and get the latest on Firefox OS')}}</p>
-                <a class="button newsletter-signup-toggle wide" href="#email-form-wrapper">{{_('Sign me up')}}</a>
-              </div>
-            </section>
-          </div>
-        </div>
-      
         <div class="item-wrapper bg-soccer nav-anchor" id="adapt1">
+          
+          <div class="item phone-item" id="phone-item-soccer">
+            <div class="phone-wrapper" id="phone-wrapper-soccer">
+              <div class="phone"></div>
+              <div id="screen-soccer" class="screen-wrapper">
+                <div class="screen screen-soccer"></div>
+              </div>
+            </div>
+          </div>
+
           <div class="item">
             <section class="content">
               {# L10n: The line break in this headline is presentational. Place the break wherever it seems best for your locale, or omit it if it isn't needed. #}
@@ -152,6 +137,16 @@
         </div>
 
         <div class="item-wrapper bg-cafe" id="adapt2">
+
+          <div class="item phone-item" id="phone-item-cafe">
+            <div class="phone-wrapper" id="phone-wrapper-cafe">
+              <div class="phone"></div>
+              <div id="screen-cafe" class="screen-wrapper">
+                <div class="screen screen-cafe"></div>
+              </div>
+            </div>
+          </div>
+
           <div class="item" id="adapt-features">
             <section class="content">
               <h2>{{_('Adaptive App Search')}}</h2>

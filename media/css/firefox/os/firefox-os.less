@@ -283,17 +283,6 @@ section p, header p {
     left: 50%;
     margin-left: -480px;
   }
-  #phone-item-intro {
-    top: 0;
-  }
-  #phone-item-soccer {
-    top: 620px;
-    .fox-wrapper { display: none; }
-  }
-  #phone-item-cafe {
-    top: 1240px;
-    .fox-wrapper { display: none; }
-  }
   .content {
     position: absolute;
     top: 105px;
@@ -368,9 +357,14 @@ section p, header p {
     padding: 1em 0;
   }
   // javascript only styles
-  &.scroller-on {
+  #adaptive-wrapper.scroller-on {
+    position: relative;
+    width: 100%;
+    height: 620px;
+    overflow: hidden;
     z-index: 2;
     background: #0f9fdb;
+
     #keep-scrolling {
       position: fixed;
       top: 645px;
@@ -388,15 +382,6 @@ section p, header p {
     }
     #phone-item-soccer, #phone-item-cafe {
       display: none;
-    }
-    #adaptive-wrapper {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 620px;
-      overflow: hidden;
-      z-index: 2;
     }
 
     #adapt-features {
@@ -420,16 +405,6 @@ section p, header p {
       .item-wrapper {
         position: absolute;
         top: 0px;
-      }
-      #adapt1 {
-        left: 100%;
-      }
-      #adapt2 {
-        left: 200%;
-      }
-      #adapt3 {
-        display: block;
-        left: 300%;
       }
     }
     ul {

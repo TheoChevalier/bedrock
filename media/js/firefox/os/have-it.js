@@ -474,6 +474,5 @@
         initHaveItAllSlider();
     } else {
         initHaveItAllScroller();
-    }  
-
+    }
 })(jQuery);

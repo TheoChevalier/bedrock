@@ -35,7 +35,7 @@
   var nav_height = $('#masthead').height();
 
   // adaptive scroll
-  var scene_hooks_top = 420;
+  var scene_hooks_top = 620;
   var $soccer_hook = $('#soccer-hook');
   var $cafe_hook = $('#cafe-hook');
   var $bday_hook = $('#birthday-hook');
@@ -100,7 +100,7 @@
   * Rotating intro background
   */
 
-  function rotate_intro_bg () {
+  function rotateIntroBG () {
     intro_bg_index = ((intro_bg_index + 1) < intro_bgs.length) ? intro_bg_index + 1 : 0;
 
     var $bg_cur, $bg_next;
@@ -126,7 +126,7 @@
   function engageIntroBGRotation() {
     clearInterval(adapt_bg_rotate_interval);
     adapt_bg_rotate_interval = setInterval(function() {
-      rotate_intro_bg();
+      rotateIntroBG();
     }, 3500);
   }
 
@@ -361,12 +361,11 @@
   /*
   * Share widget togggle
   */
+
   $('#side-nav').on('click', '.share', function (e) {
     e.preventDefault();
     toggleSharePane();
   });
-
-
 
   /*
   * Nav scroll
@@ -503,7 +502,7 @@
   }
 
   function initAdaptiveAppSearchScroller() {
-    var $adapt_features = $('#adapt-features').detach();
+    //var $adapt_features = $('#adapt-features').detach();
     var $scenes = $('#scenes');
     var soccer_hook_height = 520;
     var cafe_hook_height = 1220;
@@ -519,19 +518,20 @@
     $cafe_hook.css('height', cafe_hook_height + 'px');
     $bday_hook.css('height', bday_hook_height + 'px');
 
-    var pinDur = soccer_hook_height + cafe_hook_height + bday_hook_height + $('#every-moment').height();
+    var pinDur = soccer_hook_height + cafe_hook_height + bday_hook_height;
 
     // add scroller-on class for css repositioning, & set total height
-    $('#get-firefox-os').addClass('scroller-on').css('height', pinDur + 'px');
+    $('#adaptive-wrapper').addClass('scroller-on').css('height', pinDur + 'px');
 
     // re-position adative features bullet list in markup
-    $adapt_features.insertAfter('#phone-item-intro');
+    //$adapt_features.insertAfter('#phone-item-intro');
 
-    // pin the ffos section pretty much immediately on page load
     controller.pin($('#adaptive-wrapper'), pinDur, {
       offset: -(nav_height - 1), // -1 is for tabzilla
       pushFollowers: false
     });
+
+    /*
 
     // define all tweens
 
@@ -699,6 +699,8 @@
         }
       },{ offset: -1 }
     );
+
+    */
   }
 
   function trackGAPageNoScroll () {
