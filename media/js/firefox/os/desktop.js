@@ -534,6 +534,12 @@
 
     // pin the adaptive background and let rest of content scroll naturally
     controller.pin($('#adaptive-bg'), pinDur, {
+      offset: -nav_height - 1,
+      pushFollowers: false
+    });
+
+    // pin the adaptive features list
+    controller.pin($('#adapt2'), 1240, {
       offset: -nav_height,
       pushFollowers: false
     });
