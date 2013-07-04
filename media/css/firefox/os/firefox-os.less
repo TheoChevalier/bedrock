@@ -291,6 +291,9 @@ section p, header p {
     text-align: center;
     z-index: 2;
   }
+  #adaptive-bg {
+    display: none;
+  }
   #adapt-features .content {
     top: 55px;
   }
@@ -360,10 +363,32 @@ section p, header p {
   #adaptive-wrapper.scroller-on {
     position: relative;
     width: 100%;
-    height: 620px;
+    height: 1860px;
     overflow: hidden;
     z-index: 2;
     background: #0f9fdb;
+
+    //sticky adaptive background while content scrolls naturally
+    #adaptive-bg {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 620px;
+    }
+
+    //fake have-it-all masthead while adaptive content is pinned
+    #adaptive-bg:after {
+      position: absolute;
+      right: 0;
+      bottom: -1240px;
+      content: "";
+      width: 100%;
+      height: 1240px;
+      background: #0f9fdb;
+      z-index: 100;
+    }
 
     #keep-scrolling {
       position: fixed;
@@ -384,71 +409,87 @@ section p, header p {
       display: none;
     }
 
-    #adapt-features {
-      display: none;
-      opacity: 0;
-      z-index: 10;
+    #adapt1 {
+      z-index: 3;
+      background: transparent;
     }
+
+    #adapt2 {
+      z-index: 2;
+      background: transparent;
+    }
+
+    #adapt3 {
+      display: block;
+      z-index: 1;
+      background: transparent;
+    }
+
+    // #adapt-features {
+    //   display: none;
+    //   opacity: 0;
+    //   z-index: 10;
+    // }
 
     #adaptive-app-search {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
-      height: 620px;
-      overflow: hidden;
-      #scenes {
-        height: 620px;
-        position: relative;
-        transition: left 0.3s ease;
-      }
-      .item-wrapper {
-        position: absolute;
-        top: 0px;
-      }
+      // height: 620px;
+      // overflow: hidden;
+      // #scenes {
+      //   height: 620px;
+      //   position: relative;
+      //   transition: left 0.3s ease;
+      // }
+      // .item-wrapper {
+      //   position: absolute;
+      //   top: 0px;
+      // }
     }
-    ul {
-      .type {
-        z-index: 4;
-      }
-      .results, .save, .discover {
-        margin-top: -66px;
-      }
-      .type, .results, .save, .discover {
-        opacity: 0;
-      }
-      .results {
-        z-index: 3;
-      }
-      .save {
-        z-index: 2;
-      }
-      .discover {
-        z-index: 1;
-      }
-    }
-    // placeholders for scroll position based animations
-    #scene-hooks {
-      display: block;
-      z-index: 1;
-      position: absolute;
-      top: 620px;
-    }
-
-    .scene-hook {
-      background: transparent;
-    }
-
-    #fox-tail-tip {
-      display: block;
-      position: fixed;
-      bottom: 0;
-      right: 0;
-      width: 604px;
-      height: 45px;
-      background: url('/media/img/firefox/os/adapt/fox-tail-tip.png') top right no-repeat;
-    }
+    // ul {
+    //   .type {
+    //     z-index: 4;
+    //   }
+    //   .results, .save, .discover {
+    //     margin-top: -66px;
+    //   }
+    //   .type, .results, .save, .discover {
+    //     opacity: 0;
+    //   }
+    //   .results {
+    //     z-index: 3;
+    //   }
+    //   .save {
+    //     z-index: 2;
+    //   }
+    //   .discover {
+    //     z-index: 1;
+    //   }
+    // }
   }
+  // placeholders for scroll position based animations
+  #scene-hooks {
+    display: block;
+    z-index: 1;
+    position: absolute;
+    top: 620px;
+  }
+
+  .scene-hook {
+    background: transparent;
+  }
+
+  // #fox-tail-tip {
+  //   display: block;
+  //   position: fixed;
+  //   bottom: 0;
+  //   right: 0;
+  //   width: 604px;
+  //   height: 45px;
+  //   background: url('/media/img/firefox/os/adapt/fox-tail-tip.png') top right no-repeat;
+  // }
 }
 
 // sprites (dotted lines/plus) should essentially only show for en-US

@@ -387,9 +387,9 @@
 
   function initNavScroll () {
     // update adaptive anchors
-    $('a[href="#adapt1"]').attr('href', '#soccer-hook');
-    $('#adapt1').removeClass('nav-anchor');
-    $('#soccer-hook').addClass('nav-anchor');
+    // $('a[href="#adapt1"]').attr('href', '#soccer-hook');
+    // $('#adapt1').removeClass('nav-anchor');
+    // $('#soccer-hook').addClass('nav-anchor');
 
     // navigation
     var $navs = $('nav[role="navigation"], #ffos-main-logo');
@@ -407,23 +407,23 @@
       var new_scroll;
 
       switch (destination) {
-        case '#soccer-hook': // first scene (soccer) of adaptive section
-          // animations aren't resetting when forcing scroll to #soccer-hook top position.
-          // i don't know why - probably moving too fast for tweens to catch up.
-          // works fine forcing to 0, but we don't want that - we want #soccer-hook to show up.
-          // for some reason, setting the scroll to about 100, then animating the scroll to
-          // the top position of #scene-hooks works. it's a little not-perfect, but i'd say
-          // good enough.
-          new_scroll = 100;
+        // case '#soccer-hook': // first scene (soccer) of adaptive section
+        //   // animations aren't resetting when forcing scroll to #soccer-hook top position.
+        //   // i don't know why - probably moving too fast for tweens to catch up.
+        //   // works fine forcing to 0, but we don't want that - we want #soccer-hook to show up.
+        //   // for some reason, setting the scroll to about 100, then animating the scroll to
+        //   // the top position of #scene-hooks works. it's a little not-perfect, but i'd say
+        //   // good enough.
+        //   new_scroll = 100;
 
-          // excuse me while i pull out my pickaxe
-          setTimeout(function() {
-            $('html, body').animate({
-              scrollTop: scene_hooks_top
-            }, 300);
-          }, 100);
+        //   // excuse me while i pull out my pickaxe
+        //   setTimeout(function() {
+        //     $('html, body').animate({
+        //       scrollTop: scene_hooks_top
+        //     }, 300);
+        //   }, 100);
 
-          break;
+        //   break;
         default:
           new_scroll = $($(this).attr('href')).offset().top;
           break;
@@ -513,23 +513,72 @@
     var phone_screen_timeout_delay = 350;
 
     // height of hook determines scroll duration (available animation time) for each scene
-    $('#scene-hooks').css('top', scene_hooks_top + 'px');
-    $soccer_hook.css('height', soccer_hook_height + 'px');
-    $cafe_hook.css('height', cafe_hook_height + 'px');
-    $bday_hook.css('height', bday_hook_height + 'px');
+    // $('#scene-hooks').css('top', scene_hooks_top + 'px');
+    // $soccer_hook.css('height', soccer_hook_height + 'px');
+    // $cafe_hook.css('height', cafe_hook_height + 'px');
+    // $bday_hook.css('height', bday_hook_height + 'px');
 
     var pinDur = soccer_hook_height + cafe_hook_height + bday_hook_height;
 
     // add scroller-on class for css repositioning, & set total height
-    $('#adaptive-wrapper').addClass('scroller-on').css('height', pinDur + 'px');
+    $('#adaptive-wrapper').addClass('scroller-on');
 
     // re-position adative features bullet list in markup
     //$adapt_features.insertAfter('#phone-item-intro');
 
-    controller.pin($('#adaptive-wrapper'), pinDur, {
+    // pin the phone when scrolling down from the top
+    controller.pin($('#phone-hook'), pinDur + 620, {
       offset: -(nav_height - 1), // -1 is for tabzilla
       pushFollowers: false
     });
+
+    // pin the adaptive background and let rest of content scroll naturally
+    controller.pin($('#adaptive-bg'), pinDur, {
+      offset: -nav_height,
+      pushFollowers: false
+    });
+
+    // toggle background / phone screen rotation when scrolling up/down from masthead
+    $('#masthead').waypoint(function (dir) {
+      if (dir === 'up') {
+        engageIntroBGRotation();
+        setTimeout(function() {
+          displayPhoneScreen(intro_bg_index); // last bg shown in intro screen
+        }, phone_screen_timeout_delay * 2);
+      } else {
+        disengageIntroBGRotation();
+        clearTimeout(phone_screen_timeout);
+        phone_screen_timeout = setTimeout(function() {
+          displayPhoneScreen(0); // soccer
+        }, phone_screen_timeout_delay);       
+      }
+    }, { offset: -1 });
+
+    $('#soccer-hook').waypoint(function (dir) {
+      clearTimeout(phone_screen_timeout);
+      if (dir === 'down') {
+        phone_screen_timeout = setTimeout(function() {
+          displayPhoneScreen(1); // cafe
+        }, phone_screen_timeout_delay);
+      } else {
+        phone_screen_timeout = setTimeout(function() {
+          displayPhoneScreen(0); // soccer
+        }, phone_screen_timeout_delay);        
+      }       
+    }, { offset: -nav_height });
+
+    $('#cafe-hook').waypoint(function (dir) {
+      clearTimeout(phone_screen_timeout);
+      if (dir === 'down') {
+        phone_screen_timeout = setTimeout(function() {
+          displayPhoneScreen(2); // birthday
+        }, phone_screen_timeout_delay);
+      } else {
+        phone_screen_timeout = setTimeout(function() {
+          displayPhoneScreen(1); // cafe
+        }, phone_screen_timeout_delay);        
+      }      
+    }, { offset: -nav_height });
 
     /*
 
