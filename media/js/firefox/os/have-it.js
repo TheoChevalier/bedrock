@@ -34,6 +34,7 @@
     var $music = $('#music');
     var $maps = $('#maps ');
     var $messages = $('#messages');
+    var $marketplace = $('#marketplace');
 
     // sub section content for tweening
     var $socialLeftContent = $('#social .content.left');
@@ -69,6 +70,7 @@
         var musicAnimations = new TimelineLite();
         var mapsAnimations = new TimelineLite();
         var messagesAnimations = new TimelineLite();
+        var marketplaceAnimations = new TimelineLite();
 
         // add scroller-on class for css repositioning
         $('#have-it-all .main-wrapper').removeClass('scroller-off').addClass('scroller-on');
@@ -98,11 +100,17 @@
         // at the end we bring in the social sub section content
         landingAnimations
             .add([
+                TweenMax.from($musicApp, 2, {css: {top: '-270px'}}),
                 TweenMax.to($musicApp, 2, {css: {top: '-400px'}}),
+                TweenMax.from($photosApp, 2, {css: {top: '-270px'}}),
                 TweenMax.to($photosApp, 2, {css: {top: '-400px'}}),
+                TweenMax.from($mailApp, 2, {css: {top: '-270px'}}),
                 TweenMax.to($mailApp, 2, {css: {top: '-400px'}}),
+                TweenMax.from($marketplaceApp, 2, {css: {top: '350px'}}),
                 TweenMax.to($marketplaceApp, 2, {css: {top: '560px'}}),
+                TweenMax.from($contactsApp, 2, {css: {top: '350px'}}),
                 TweenMax.to($contactsApp, 2, {css: {top: '560px'}}),
+                TweenMax.from($mapsApp, 2, {css: {top: '350px'}}),
                 TweenMax.to($mapsApp, 2, {css: {top: '560px'}}),
                 TweenMax.to($landingHeading, 2, {css: {marginLeft: '-200%'}})
             ])
@@ -183,6 +191,14 @@
                 TweenMax.to($marketplaceContent, 2, {css: {marginRight: 0, opacity: 1}})
             ]);
 
+        // timeline of tweens for marketplace sub section
+        // here we just move the content out as it's the last section
+        marketplaceAnimations
+            .add([
+                TweenMax.to($marketplaceApp, 2, {css: {top: '560px'}, delay: 3}),
+                TweenMax.to($marketplaceContent, 2, {css: {marginRight: '-100%', opacity: 0}, delay: 3})
+            ]);
+
         // reset default positions *before* we get to have-it-all
         // tweens sometimes don't finish when srolling up/down page too fast (e.g. home key)
         $('#adaptive-wrapper').waypoint(function () {
@@ -210,7 +226,7 @@
             $mailApp.css({'top': '-400px'});
             $contactsApp.css({'top': '560px'});
             $mapsApp.css({'top': '560px'});
-            $marketplaceApp.css({'top': '80px'});
+            $marketplaceApp.css({'top': '560px'});
             $socialLeftContent.css('margin-left', '-100%');
             $socialRightContent.css('margin-right', '-100%');
             $photosContent.css('margin-left', '-100%');
@@ -220,7 +236,7 @@
             $mapsContent.css('margin-left', '-100%');
             $messagesContent.css('margin-left', '-100%');
             $messagesApp.css({'margin-left': '-175%'});
-            $marketplaceContent.css('margin-right', 0);
+            $marketplaceContent.css('margin-right', '-100%');
         }, { offset: landingOffset });
 
         // sometimes if you scroll up really fast tweens can get missed
@@ -355,6 +371,12 @@
 
         hiaController.pin($messages, SECTION_DURATION, {
             anim: messagesAnimations,
+            offset: -landingOffset,
+            pushFollowers: false
+        });
+
+        hiaController.pin($marketplace, SECTION_DURATION, {
+            anim: marketplaceAnimations,
             offset: -landingOffset,
             pushFollowers: false
         });
