@@ -193,6 +193,19 @@
     }
   }
 
+  function displayAdaptiveBG(bg) {
+    // set all to non-active and top level z-index
+    $('.adaptive-bg').stop().attr('data-current', 0).css('opacity', 1).addClass('top');
+
+    // set new bg to current, fully visible, and put on bottom of stack
+    $('#adaptive-bg-' + bg).attr('data-current', 1).css('opacity', 1).removeClass('top');
+
+    // fade out non-current bg
+    $('#adaptive-bgs div[data-current="0"]').animate({
+      'opacity': 0
+    }, 350);
+  }
+
   /*
   * Sign up form
   */
@@ -523,6 +536,8 @@
     // add scroller-on class for css repositioning, & set total height
     $('#adaptive-wrapper').addClass('scroller-on');
 
+    $('#adaptive-mask').css('height', 620);
+
     // re-position adative features bullet list in markup
     //$adapt_features.insertAfter('#phone-item-intro');
 
@@ -533,8 +548,20 @@
     });
 
     // pin the adaptive background and let rest of content scroll naturally
-    controller.pin($('#adaptive-bg'), pinDur, {
+    controller.pin($('#adaptive-bgs'), pinDur, {
       offset: -(nav_height - 1),
+      pushFollowers: false
+    });
+
+    // pin the blue mask
+    controller.pin($('#adaptive-mask'), 620, {
+      offset: -(nav_height + 620 - 1),
+      pushFollowers: false
+    });
+
+    // pin the adaptive intro text
+    controller.pin($('#adapt1'), 200, {
+      offset: -nav_height,
       pushFollowers: false
     });
 
@@ -551,12 +578,16 @@
         setTimeout(function() {
           displayPhoneScreen(intro_bg_index); // last bg shown in intro screen
         }, phone_screen_timeout_delay * 2);
+
+        displayAdaptiveBG('soccer');
       } else {
         disengageIntroBGRotation();
         clearTimeout(phone_screen_timeout);
         phone_screen_timeout = setTimeout(function() {
           displayPhoneScreen(0); // soccer
-        }, phone_screen_timeout_delay);       
+        }, phone_screen_timeout_delay);
+
+        displayAdaptiveBG('soccer');
       }
     }, { offset: -1 });
 
@@ -566,11 +597,15 @@
         phone_screen_timeout = setTimeout(function() {
           displayPhoneScreen(1); // cafe
         }, phone_screen_timeout_delay);
+
+        displayAdaptiveBG('cafe');
       } else {
         phone_screen_timeout = setTimeout(function() {
           displayPhoneScreen(0); // soccer
-        }, phone_screen_timeout_delay);        
-      }       
+        }, phone_screen_timeout_delay);
+
+        displayAdaptiveBG('soccer');
+      }
     }, { offset: -nav_height });
 
     $('#cafe-hook').waypoint(function (dir) {
@@ -579,11 +614,15 @@
         phone_screen_timeout = setTimeout(function() {
           displayPhoneScreen(2); // birthday
         }, phone_screen_timeout_delay);
+
+        displayAdaptiveBG('birthday');
       } else {
         phone_screen_timeout = setTimeout(function() {
           displayPhoneScreen(1); // cafe
-        }, phone_screen_timeout_delay);        
-      }      
+        }, phone_screen_timeout_delay);
+
+        displayAdaptiveBG('cafe');
+      }
     }, { offset: -nav_height });
 
     /*
@@ -737,16 +776,6 @@
       controller.addTween($bday_hook, to_bday_plus, 200, 525);
     }
 
-    // position fox tail tip when have it all comes in to view
-    $('#have-it-all').waypoint(function(dir) {
-        if (dir === 'down') {
-          $('#fox-tail-tip').css('position', 'absolute');
-        } else {
-          $('#fox-tail-tip').css('position', 'fixed');
-        }
-      },{ offset: '100%' }
-    );
-
     //reset default position if we scroll really fast to top of page (e.g. home key)
     $('#masthead').waypoint(function (dir) {
         if (dir === 'up') {
@@ -756,6 +785,16 @@
     );
 
     */
+
+    // position fox tail tip when have it all comes in to view
+    $('#have-it-all').waypoint(function(dir) {
+        if (dir === 'down') {
+          $('#fox-tail-tip').css('position', 'absolute');
+        } else {
+          $('#fox-tail-tip').css('position', 'fixed');
+        }
+      },{ offset: '100%' }
+    );
   }
 
   function trackGAPageNoScroll () {
