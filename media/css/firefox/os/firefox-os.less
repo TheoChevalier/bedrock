@@ -270,6 +270,9 @@ section p, header p {
 
 #get-firefox-os {
   position: relative;
+  #every-moment {
+    z-index: 3;
+  }
   .item-wrapper {
     width: 100%;
     height: 620px;
@@ -376,6 +379,7 @@ section p, header p {
       left: 0;
       width: 100%;
       height: 620px;
+      z-index: 2;
       .adaptive-bg {
         position: absolute;
         top: 0;
@@ -427,18 +431,13 @@ section p, header p {
 
     #adapt2 {
       background: transparent;
+      z-index: 2;
     }
 
     #adapt3 {
       display: block;
       background: transparent;
     }
-
-    // #adapt-features {
-    //   display: none;
-    //   opacity: 0;
-    //   z-index: 10;
-    // }
 
     #adaptive-app-search {
       position: absolute;
@@ -457,26 +456,26 @@ section p, header p {
       //   top: 0px;
       // }
     }
-    // ul {
-    //   .type {
-    //     z-index: 4;
-    //   }
-    //   .results, .save, .discover {
-    //     margin-top: -66px;
-    //   }
-    //   .type, .results, .save, .discover {
-    //     opacity: 0;
-    //   }
-    //   .results {
-    //     z-index: 3;
-    //   }
-    //   .save {
-    //     z-index: 2;
-    //   }
-    //   .discover {
-    //     z-index: 1;
-    //   }
-    // }
+    ul {
+      .type {
+        z-index: 4;
+      }
+      .results, .save, .discover {
+        margin-top: -66px;
+      }
+      .type, .results, .save, .discover {
+        opacity: 0;
+      }
+      .results {
+        z-index: 3;
+      }
+      .save {
+        z-index: 2;
+      }
+      .discover {
+        z-index: 1;
+      }
+    }
   }
   // placeholders for scroll position based animations
   #scene-hooks {
@@ -493,11 +492,12 @@ section p, header p {
   #fox-tail-tip {
     display: block;
     position: fixed;
-    bottom: 0;
+    bottom: -45px;
     right: 0;
     width: 604px;
     height: 45px;
     background: url('/media/img/firefox/os/adapt/fox-tail-tip.png') top right no-repeat;
+    z-index: 5;
   }
 }
 
@@ -519,7 +519,7 @@ html[lang="en-US"] #get-firefox-os {
       margin-top: 46px;
     }
   }
-  &.scroller-on {
+  #adaptive-wrapper.scroller-on {
     ul {
       .discover {
         margin-top: -66px;
@@ -544,6 +544,7 @@ html[lang="en-US"] #get-firefox-os {
     }
     #adapt-feature-sprite-plus {
       opacity: 0;
+      width: 26px;
       top: 200px; // animate to 286px
     }
   }

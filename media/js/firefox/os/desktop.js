@@ -195,13 +195,15 @@
 
   function displayAdaptiveBG(bg) {
     // set all to non-active and top level z-index
-    $('.adaptive-bg').stop().attr('data-current', 0).css('opacity', 1).addClass('top');
+    $('.adaptive-bg').stop();
+
+    $('.adaptive-bg[data-current="1"]').attr('data-current', 0).css('opacity', 1).addClass('top');
 
     // set new bg to current, fully visible, and put on bottom of stack
     $('#adaptive-bg-' + bg).attr('data-current', 1).css('opacity', 1).removeClass('top');
 
     // fade out non-current bg
-    $('#adaptive-bgs div[data-current="0"]').animate({
+    $('.adaptive-bg[data-current="0"]').animate({
       'opacity': 0
     }, 350);
   }
@@ -515,10 +517,9 @@
   }
 
   function initAdaptiveAppSearchScroller() {
-    //var $adapt_features = $('#adapt-features').detach();
     var $scenes = $('#scenes');
     var soccer_hook_height = 520;
-    var cafe_hook_height = 1220;
+    var cafe_hook_height = 920;
     var bday_hook_height = 1520;
     var controller = $.superscrollorama({ playoutAnimations: false });
 
@@ -526,28 +527,19 @@
     var phone_screen_timeout_delay = 350;
 
     // height of hook determines scroll duration (available animation time) for each scene
-    // $('#scene-hooks').css('top', scene_hooks_top + 'px');
-    // $soccer_hook.css('height', soccer_hook_height + 'px');
-    // $cafe_hook.css('height', cafe_hook_height + 'px');
-    // $bday_hook.css('height', bday_hook_height + 'px');
+    $('#scene-hooks').css('top', scene_hooks_top + 'px');
+    $soccer_hook.css('height', soccer_hook_height + 'px');
+    $cafe_hook.css('height', cafe_hook_height + 'px');
+    $bday_hook.css('height', bday_hook_height + 'px');
 
     var pinDur = soccer_hook_height + cafe_hook_height + bday_hook_height;
 
     // add scroller-on class for css repositioning, & set total height
-    $('#adaptive-wrapper').addClass('scroller-on');
+    $('#adaptive-wrapper').addClass('scroller-on').css('height', pinDur + 'px');
 
     $('#adaptive-mask').css('height', 620);
 
     $('#phone-hook').css('position', 'fixed');
-
-    // re-position adative features bullet list in markup
-    //$adapt_features.insertAfter('#phone-item-intro');
-
-    // pin the phone when scrolling down from the top
-    // controller.pin($('#phone-hook'), pinDur + 620, {
-    //   offset: -(nav_height - 1), // -1 is for tabzilla
-    //   pushFollowers: false
-    // });
 
     // pin the adaptive background and let rest of content scroll naturally
     controller.pin($('#adaptive-bgs'), pinDur, {
@@ -556,19 +548,26 @@
     });
 
     // pin the blue mask
-    controller.pin($('#adaptive-mask'), 620, {
+    controller.pin($('#adaptive-mask'), pinDur, {
       offset: -(nav_height + 620 - 1),
-      pushFollowers: false
-    });
-
-    // pin the adaptive intro text
-    controller.pin($('#adapt1'), 200, {
-      offset: -nav_height,
-      pushFollowers: false
+      pushFollowers: false,
+      onPin: function() {
+        $('#fox-tail-tip').animate({
+          'bottom': 0
+        }, 350);
+      },
+      onUnpin: function(going_down) {
+        // only slide tail down if we're scrolling up
+        if (!going_down) {
+          $('#fox-tail-tip').animate({
+            'bottom': '-45px'
+          }, 350);
+        }
+      }
     });
 
     // pin the adaptive features list
-    controller.pin($('#adapt2'), 1240, {
+    controller.pin($('#adapt2'), pinDur, {
       offset: -nav_height,
       pushFollowers: false
     });
@@ -577,16 +576,17 @@
     $('#masthead').waypoint(function (dir) {
       if (dir === 'up') {
         engageIntroBGRotation();
+
         setTimeout(function() {
           displayPhoneScreen(intro_bg_index); // last bg shown in intro screen
         }, phone_screen_timeout_delay * 2);
 
         displayAdaptiveBG('soccer');
-
-        //$('#phone-hook').css('position', 'static');
       } else {
         disengageIntroBGRotation();
+
         clearTimeout(phone_screen_timeout);
+
         phone_screen_timeout = setTimeout(function() {
           displayPhoneScreen(0); // soccer
         }, phone_screen_timeout_delay);
@@ -595,8 +595,9 @@
       }
     }, { offset: -1 });
 
-    $('#soccer-hook').waypoint(function (dir) {
+    $soccer_hook.waypoint(function (dir) {
       clearTimeout(phone_screen_timeout);
+
       if (dir === 'down') {
         phone_screen_timeout = setTimeout(function() {
           displayPhoneScreen(1); // cafe
@@ -612,8 +613,27 @@
       }
     }, { offset: -nav_height });
 
-    $('#cafe-hook').waypoint(function (dir) {
+    $cafe_hook.waypoint(function (dir) {
       clearTimeout(phone_screen_timeout);
+
+      if (dir === 'down') {
+        phone_screen_timeout = setTimeout(function() {
+          displayPhoneScreen(1); // birthday
+        }, phone_screen_timeout_delay);
+
+        displayAdaptiveBG('cafe');
+      } else {
+        phone_screen_timeout = setTimeout(function() {
+          displayPhoneScreen(0); // cafe
+        }, phone_screen_timeout_delay);
+
+        displayAdaptiveBG('soccer');
+      }
+    }, { offset: -nav_height });
+
+    $bday_hook.waypoint(function (dir) {
+      clearTimeout(phone_screen_timeout);
+
       if (dir === 'down') {
         phone_screen_timeout = setTimeout(function() {
           displayPhoneScreen(2); // birthday
@@ -628,6 +648,40 @@
         displayAdaptiveBG('cafe');
       }
     }, { offset: -nav_height });
+
+    // define adaptive features tweens
+
+    var to_cafe_blue_line = TweenMax.to($('#adapt-feature-sprite-blue-line'), 1, { css: { 'width': '123px' } });
+    var to_cafe_type = TweenMax.to($('#adapt-feature-type'), 1, {
+      css: { 'opacity': 1 }
+    });
+
+    var to_cafe_orange_line = TweenMax.to($('#adapt-feature-sprite-orange-line'), 1, { css: { 'width': '123px' } });
+    var to_cafe_results = TweenMax.to($('#adapt-feature-results'), 1, {
+      css: { 'marginTop': 0, 'opacity': 1 }
+    });
+
+    var to_bday_save = TweenMax.to($('#adapt-feature-save'), 1, { css: { 'marginTop': 0, 'opacity': 1 } });
+
+    var to_bday_plus = TweenMax.to($('#adapt-feature-sprite-plus'), 1, {
+      css: { 'top': '286px', 'opacity': 1 }
+    });
+
+    var to_bday_discover = TweenMax.to($('#adapt-feature-discover'), 1, { css: { 'opacity': 1, 'marginTop': ((is_us) ? '44px' : '0px') } });
+
+    controller.addTween($cafe_hook, to_cafe_type, 150, 425);
+    controller.addTween($cafe_hook, to_cafe_results, 150, 700);
+
+    controller.addTween($bday_hook, to_bday_save, 250, 400);
+    controller.addTween($bday_hook, to_bday_discover, 225, 550);
+
+    // if en-US, show sprites
+    if (is_us) {
+      controller.addTween($cafe_hook, to_cafe_blue_line, 250, 250);
+      controller.addTween($cafe_hook, to_cafe_orange_line, 250, 550);
+
+      controller.addTween($bday_hook, to_bday_plus, 200, 525);
+    }
 
     /*
 
