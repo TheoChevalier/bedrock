@@ -538,14 +538,16 @@
 
     $('#adaptive-mask').css('height', 620);
 
+    $('#phone-hook').css('position', 'fixed');
+
     // re-position adative features bullet list in markup
     //$adapt_features.insertAfter('#phone-item-intro');
 
     // pin the phone when scrolling down from the top
-    controller.pin($('#phone-hook'), pinDur + 620, {
-      offset: -(nav_height - 1), // -1 is for tabzilla
-      pushFollowers: false
-    });
+    // controller.pin($('#phone-hook'), pinDur + 620, {
+    //   offset: -(nav_height - 1), // -1 is for tabzilla
+    //   pushFollowers: false
+    // });
 
     // pin the adaptive background and let rest of content scroll naturally
     controller.pin($('#adaptive-bgs'), pinDur, {
@@ -580,6 +582,8 @@
         }, phone_screen_timeout_delay * 2);
 
         displayAdaptiveBG('soccer');
+
+        //$('#phone-hook').css('position', 'static');
       } else {
         disengageIntroBGRotation();
         clearTimeout(phone_screen_timeout);
