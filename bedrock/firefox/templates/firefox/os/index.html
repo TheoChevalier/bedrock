@@ -75,8 +75,6 @@
 <a href="#email-form-wrapper" id="signup-toggle-icon" class="newsletter-signup-toggle">{{_('Sign me up')}}</a>
 
 <div id="get-firefox-os">
-  <!--<span id="keep-scrolling"></span>-->
-
   <div class="item-wrapper" id="every-moment">
     <div class="item phone-item" id="phone-item-intro">
       <div class="phone-wrapper" id="phone-wrapper-intro">
@@ -91,7 +89,7 @@
           <div class="tail"></div>
         </div>
       </div>
-    </div>
+    </div><!--/#phone-item-intro-->
 
     <div id="intro-bg-a" class="intro-bg bg-birthday"></div>
 
@@ -110,14 +108,16 @@
           <a class="button newsletter-signup-toggle wide" href="#email-form-wrapper">{{_('Sign me up')}}</a>
         </div>
       </section>
-    </div>
-  </div>
+    </div><!--/.item-->
+  </div><!--/#every-moment-->
 
   <div id="adaptive-wrapper">
     <div id="adaptive-bgs">
       <div id="adaptive-bg-soccer" class="adaptive-bg bg-soccer"></div>
       <div id="adaptive-bg-cafe" class="adaptive-bg bg-cafe"></div>
       <div id="adaptive-bg-birthday" class="adaptive-bg bg-birthday"></div>
+
+      <a title="{{_('Scroll down')}}" href="#" id="keep-scrolling"></a>
     </div>
 
     <div id="adaptive-app-search">

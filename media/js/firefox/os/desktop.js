@@ -401,11 +401,6 @@
   }
 
   function initNavScroll () {
-    // update adaptive anchors
-    // $('a[href="#adapt1"]').attr('href', '#soccer-hook');
-    // $('#adapt1').removeClass('nav-anchor');
-    // $('#soccer-hook').addClass('nav-anchor');
-
     // navigation
     var $navs = $('nav[role="navigation"], #ffos-main-logo');
     var $side_nav = $('#side-nav');
@@ -418,31 +413,7 @@
       // GA track click
       navClickGATrack(this.hash);
 
-      var destination = $(this).attr('href');
-      var new_scroll;
-
-      switch (destination) {
-        // case '#soccer-hook': // first scene (soccer) of adaptive section
-        //   // animations aren't resetting when forcing scroll to #soccer-hook top position.
-        //   // i don't know why - probably moving too fast for tweens to catch up.
-        //   // works fine forcing to 0, but we don't want that - we want #soccer-hook to show up.
-        //   // for some reason, setting the scroll to about 100, then animating the scroll to
-        //   // the top position of #scene-hooks works. it's a little not-perfect, but i'd say
-        //   // good enough.
-        //   new_scroll = 100;
-
-        //   // excuse me while i pull out my pickaxe
-        //   setTimeout(function() {
-        //     $('html, body').animate({
-        //       scrollTop: scene_hooks_top
-        //     }, 300);
-        //   }, 100);
-
-        //   break;
-        default:
-          new_scroll = $($(this).attr('href')).offset().top;
-          break;
-      }
+      var new_scroll = $($(this).attr('href')).offset().top;
 
       $w.scrollTop(new_scroll - nav_height);
     });
@@ -479,43 +450,6 @@
     });
   }
 
-  // if user begins transition into next scene and stops scrolling, force transition to complete
-  var tween_previous = 0; // previous progress of executing tween
-  var scroll_queued = false; // boolean to know if auto-scroll is queued up
-  var scroll_timeout = null; // holds timeout to auto-scroll
-
-  // sets or clears timeout to auto-scroll screen to the specified top position
-  function autoAdvanceAdaptiveScene(new_scroll) {
-    if (new_scroll === false) {
-      clearTimeout(scroll_timeout);
-      scroll_queued = false;
-    } else {
-      if (!scroll_queued) {
-        scroll_timeout = setTimeout(function() {
-          $('html, body').animate({ scrollTop: new_scroll }, 500);
-          scroll_queued = false;
-        }, 500);
-
-        scroll_queued = true;
-      }
-    }
-  }
-
-  // called in onUpdate handler in tweens
-  function onUpdateHandler(new_scroll, current_tween_progress) {
-    // if there's no auto-scroll queued up, check if there should be
-    if (!scroll_queued) {
-      // is the tween reversing?
-      // (my kingdom for an onReverseStart callback. jeez.)
-      if (current_tween_progress < tween_previous) {
-        autoAdvanceAdaptiveScene(new_scroll);
-        tween_previous = 0;
-      } else {
-        tween_previous = current_tween_progress;
-      }
-    }
-  }
-
   function initAdaptiveAppSearchScroller() {
     var $scenes = $('#scenes');
     var soccer_hook_height = 520;
@@ -525,6 +459,12 @@
 
     var phone_screen_timeout;
     var phone_screen_timeout_delay = 350;
+
+    // move adaptive sprites (dotted lines, plus) for z-index placement?
+    // will take some fancy/nasty wizardry to get the dotted lines on top
+    // of the phone. below is a start.
+    // var $sprites = $('#adapt-feature-sprites').detach();
+    // $sprites.insertBefore($('#adaptive-wrapper'));
 
     // height of hook determines scroll duration (available animation time) for each scene
     $('#scene-hooks').css('top', scene_hooks_top + 'px');
@@ -552,9 +492,12 @@
       offset: -(nav_height + 620 - 1),
       pushFollowers: false,
       onPin: function() {
-        $('#fox-tail-tip').animate({
-          'bottom': 0
-        }, 350);
+        // make sure we have space for the tail
+        if ($w.height() > 744) {
+          $('#fox-tail-tip').animate({
+            'bottom': 0
+          }, 350);
+        }
       },
       onUnpin: function(going_down) {
         // only slide tail down if we're scrolling up
@@ -669,160 +612,14 @@
 
     var to_bday_discover = TweenMax.to($('#adapt-feature-discover'), 1, { css: { 'opacity': 1, 'marginTop': ((is_us) ? '44px' : '0px') } });
 
-    controller.addTween($cafe_hook, to_cafe_type, 150, 425);
-    controller.addTween($cafe_hook, to_cafe_results, 150, 700);
-
-    controller.addTween($bday_hook, to_bday_save, 250, 400);
-    controller.addTween($bday_hook, to_bday_discover, 225, 550);
-
-    // if en-US, show sprites
-    if (is_us) {
-      controller.addTween($cafe_hook, to_cafe_blue_line, 250, 250);
-      controller.addTween($cafe_hook, to_cafe_orange_line, 250, 550);
-
-      controller.addTween($bday_hook, to_bday_plus, 200, 525);
-    }
-
-    /*
-
-    // define all tweens
-
-    var to_soccer = TweenMax.to(
-      $scenes, // element to animate
-      1, // duration of animation in seconds
-      { // animation parameters
-        css: { 'left': '-100%' }, // CSS properties to animate
-        onStart: function(tween) {
-          autoAdvanceAdaptiveScene(scene_hooks_top + nav_height);
-        },
-        onComplete: function() { // call when animation completes
-          autoAdvanceAdaptiveScene(false);
-
-          disengageIntroBGRotation();
-
-          clearTimeout(phone_screen_timeout);
-          phone_screen_timeout = setTimeout(function() {
-            displayPhoneScreen(0); // soccer
-          }, phone_screen_timeout_delay);
-        },
-        onReverseComplete: function() { // call when animation completes reversal
-          autoAdvanceAdaptiveScene(false);
-
-          clearTimeout(phone_screen_timeout);
-          phone_screen_timeout = setTimeout(function() {
-            displayPhoneScreen(intro_bg_index); // last bg shown in intro screen
-          }, phone_screen_timeout_delay);
-
-          engageIntroBGRotation();
-
-          // make sure phone screen is set right
-          // really fast upwards scrolling can cause onReverseComplete's to fire
-          // in incorrect order
-          setTimeout(function() {
-            displayPhoneScreen(intro_bg_index); // last bg shown in intro screen
-          }, phone_screen_timeout_delay * 2);
-        },
-        onUpdate: function() { // call every time animation changes frames
-          onUpdateHandler(0, this.totalTime());
-        }
-    });
-
-    var to_fox_wrapper = TweenMax.to($('#fox-wrapper-intro'), 1, { css: { 'left': '-100%' } });
-
-    var to_cafe = TweenMax.to($scenes, 1, {
-      css: { 'left': '-200%' },
-      onStart: function() {
-        autoAdvanceAdaptiveScene(soccer_hook_height + cafe_hook_height);
-      },
-      onComplete: function() {
-        autoAdvanceAdaptiveScene(false);
-
-        clearTimeout(phone_screen_timeout);
-        phone_screen_timeout = setTimeout(function() {
-          displayPhoneScreen(1); // cafe
-        }, phone_screen_timeout_delay);
-      },
-      onReverseComplete: function() {
-        autoAdvanceAdaptiveScene(false);
-
-        clearTimeout(phone_screen_timeout);
-        phone_screen_timeout = setTimeout(function() {
-          displayPhoneScreen(0); // soccer
-        }, phone_screen_timeout_delay);
-      },
-      onUpdate: function() {
-        onUpdateHandler(scene_hooks_top + nav_height, this.totalTime());
-      }
-    });
-
-    var to_cafe_features = TweenMax.to($adapt_features, 1, {
-      css: { 'opacity': 1 },
-      onStart: function() {
-        $adapt_features.css('display', 'block');
-      },
-      onReverseComplete: function() {
-        $adapt_features.css('display', 'none');
-      }
-    });
-
-    var to_cafe_blue_line = TweenMax.to($('#adapt-feature-sprite-blue-line'), 1, { css: { 'width': '123px' } });
-    var to_cafe_type = TweenMax.to($('#adapt-feature-type'), 1, {
-      css: { 'opacity': 1 }
-    });
-    var to_cafe_orange_line = TweenMax.to($('#adapt-feature-sprite-orange-line'), 1, { css: { 'width': '123px' } });
-    var to_cafe_results = TweenMax.to($('#adapt-feature-results'), 1, {
-      css: { 'marginTop': 0, 'opacity': 1 }
-    });
-
-    var to_bday = TweenMax.to($scenes, 1, {
-      css: { 'left': '-300%' },
-      onStart: function() {
-        autoAdvanceAdaptiveScene(cafe_hook_height + bday_hook_height);
-      },
-      onComplete: function() {
-        autoAdvanceAdaptiveScene(false);
-
-        clearTimeout(phone_screen_timeout);
-        phone_screen_timeout = setTimeout(function() {
-          displayPhoneScreen(2); // bday
-        }, phone_screen_timeout_delay);
-      },
-      onReverseComplete: function() {
-        autoAdvanceAdaptiveScene(false);
-
-        clearTimeout(phone_screen_timeout);
-        phone_screen_timeout = setTimeout(function() {
-          displayPhoneScreen(1); // cafe
-        }, phone_screen_timeout_delay);
-      },
-      onUpdate: function() {
-        onUpdateHandler(soccer_hook_height + cafe_hook_height, this.totalTime());
-      }
-    });
-
-    var to_bday_save = TweenMax.to($('#adapt-feature-save'), 1, { css: { 'marginTop': 0, 'opacity': 1 } });
-
-    var to_bday_plus = TweenMax.to($('#adapt-feature-sprite-plus'), 1, {
-      css: { 'top': '286px', 'opacity': 1 }
-    });
-
-    var to_bday_discover = TweenMax.to($('#adapt-feature-discover'), 1, { css: { 'opacity': 1, 'marginTop': ((is_us) ? '44px' : '0px') } });
-
     controller.addTween(
-      $soccer_hook, // trigger animation when this element is scrolled to
-      to_soccer, // tween to execute
-      200, // duration of animation in pixels
-      0 // trigger offset in pixels
+      $cafe_hook,// execute tween when this element is visible
+      to_cafe_type,// tween to execute
+      150,// scroll duration (px) of tween
+      425// offset of tween (start 425 pixels after $cafe_hook comes in to viewport)
     );
-
-    controller.addTween($soccer_hook, to_fox_wrapper, 300, 0);
-
-    controller.addTween($cafe_hook, to_cafe, 200, 0);
-    controller.addTween($cafe_hook, to_cafe_features, 200, 80);
-    controller.addTween($cafe_hook, to_cafe_type, 150, 425);
     controller.addTween($cafe_hook, to_cafe_results, 150, 700);
 
-    controller.addTween($bday_hook, to_bday, 200, 0);
     controller.addTween($bday_hook, to_bday_save, 250, 400);
     controller.addTween($bday_hook, to_bday_discover, 225, 550);
 
@@ -833,16 +630,6 @@
 
       controller.addTween($bday_hook, to_bday_plus, 200, 525);
     }
-
-    //reset default position if we scroll really fast to top of page (e.g. home key)
-    $('#masthead').waypoint(function (dir) {
-        if (dir === 'up') {
-          $('#scenes').css('left', 0);
-        }
-      },{ offset: -1 }
-    );
-
-    */
 
     // position fox tail tip when have it all comes in to view
     $('#have-it-all').waypoint(function(dir) {
