@@ -412,6 +412,10 @@
             trackGAEvent(['_trackEvent', 'FxOs Consumer Page', 'click', this.hash]);
         });
 
+        $('#landing').waypoint(function (direction) {
+            $nav.find('a').removeClass('curr');
+        });
+
         $('.hia-anchor').waypoint(function (direction) {
             if (direction === 'down') {
                 $nav.find('a').removeClass('curr');

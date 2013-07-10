@@ -6,7 +6,7 @@
 
   var $w = $(window);
 
-  var is_us = $('html').attr('lang') === 'en-US';
+  var isUS = $('html').attr('lang') === 'en-US';
 
   var isSmallViewport = $w.width() < 760;
   var isTouch = 'ontouchstart' in window || navigator.msMaxTouchPoints || navigator.maxTouchPoints || isSmallViewport;
@@ -64,8 +64,8 @@
       }
     } else {
       // force page to the top when refreshing
-      if ($w.scrollTop() > 0) {
-        $w.scrollTop(0);
+      if ($(document).scrollTop() > 0) {
+        $(document).scrollTop(0);
       }
     }
   }
@@ -452,9 +452,9 @@
 
   function initAdaptiveAppSearchScroller() {
     var $scenes = $('#scenes');
-    var soccer_hook_height = 520;
+    var bday_hook_height = 520;
     var cafe_hook_height = 920;
-    var bday_hook_height = 1520;
+    var soccer_hook_height = 1520;
     var controller = $.superscrollorama({ playoutAnimations: false });
 
     var phone_screen_timeout;
@@ -515,46 +515,32 @@
       pushFollowers: false
     });
 
-    // toggle background / phone screen rotation when scrolling up/down from masthead
+    // toggle background when scrolling up/down from masthead
     $('#masthead').waypoint(function (dir) {
       if (dir === 'up') {
         engageIntroBGRotation();
-
-        setTimeout(function() {
-          displayPhoneScreen(intro_bg_index); // last bg shown in intro screen
-        }, phone_screen_timeout_delay * 2);
-
-        displayAdaptiveBG('soccer');
+        displayAdaptiveBG('birthday');
       } else {
         disengageIntroBGRotation();
-
-        clearTimeout(phone_screen_timeout);
-
-        phone_screen_timeout = setTimeout(function() {
-          displayPhoneScreen(0); // soccer
-        }, phone_screen_timeout_delay);
-
-        displayAdaptiveBG('soccer');
+        displayAdaptiveBG('birthday');
       }
     }, { offset: -1 });
 
-    $soccer_hook.waypoint(function (dir) {
+    // toggle phone screen when scrolling to first adaptive section
+    // offset a bit from masthead/bg change above
+    $bday_hook.waypoint(function (dir) {
       clearTimeout(phone_screen_timeout);
 
       if (dir === 'down') {
         phone_screen_timeout = setTimeout(function() {
-          displayPhoneScreen(1); // cafe
+          displayPhoneScreen(2); // birthday
         }, phone_screen_timeout_delay);
-
-        displayAdaptiveBG('cafe');
       } else {
         phone_screen_timeout = setTimeout(function() {
-          displayPhoneScreen(0); // soccer
+          displayPhoneScreen(intro_bg_index); // last bg shown in intro screen
         }, phone_screen_timeout_delay);
-
-        displayAdaptiveBG('soccer');
       }
-    }, { offset: -nav_height });
+    }, { offset: 300 });
 
     $cafe_hook.waypoint(function (dir) {
       clearTimeout(phone_screen_timeout);
@@ -567,22 +553,22 @@
         displayAdaptiveBG('cafe');
       } else {
         phone_screen_timeout = setTimeout(function() {
-          displayPhoneScreen(0); // cafe
-        }, phone_screen_timeout_delay);
-
-        displayAdaptiveBG('soccer');
-      }
-    }, { offset: -nav_height });
-
-    $bday_hook.waypoint(function (dir) {
-      clearTimeout(phone_screen_timeout);
-
-      if (dir === 'down') {
-        phone_screen_timeout = setTimeout(function() {
           displayPhoneScreen(2); // birthday
         }, phone_screen_timeout_delay);
 
         displayAdaptiveBG('birthday');
+      }
+    }, { offset: -nav_height });
+
+    $soccer_hook.waypoint(function (dir) {
+      clearTimeout(phone_screen_timeout);
+
+      if (dir === 'down') {
+        phone_screen_timeout = setTimeout(function() {
+          displayPhoneScreen(0); // soccer
+        }, phone_screen_timeout_delay);
+
+        displayAdaptiveBG('soccer');
       } else {
         phone_screen_timeout = setTimeout(function() {
           displayPhoneScreen(1); // cafe
@@ -594,41 +580,41 @@
 
     // define adaptive features tweens
 
-    var to_cafe_blue_line = TweenMax.to($('#adapt-feature-sprite-blue-line'), 1, { css: { 'width': '123px' } });
-    var to_cafe_type = TweenMax.to($('#adapt-feature-type'), 1, {
+    var to_blue_line = TweenMax.to($('#adapt-feature-sprite-blue-line'), 1, { css: { 'width': '123px' } });
+    var to_feature_type = TweenMax.to($('#adapt-feature-type'), 1, {
       css: { 'opacity': 1 }
     });
 
-    var to_cafe_orange_line = TweenMax.to($('#adapt-feature-sprite-orange-line'), 1, { css: { 'width': '123px' } });
-    var to_cafe_results = TweenMax.to($('#adapt-feature-results'), 1, {
+    var to_orange_line = TweenMax.to($('#adapt-feature-sprite-orange-line'), 1, { css: { 'width': '123px' } });
+    var to_feature_results = TweenMax.to($('#adapt-feature-results'), 1, {
       css: { 'marginTop': 0, 'opacity': 1 }
     });
 
-    var to_bday_save = TweenMax.to($('#adapt-feature-save'), 1, { css: { 'marginTop': 0, 'opacity': 1 } });
+    var to_feature_save = TweenMax.to($('#adapt-feature-save'), 1, { css: { 'marginTop': 0, 'opacity': 1 } });
 
-    var to_bday_plus = TweenMax.to($('#adapt-feature-sprite-plus'), 1, {
+    var to_feature_plus = TweenMax.to($('#adapt-feature-sprite-plus'), 1, {
       css: { 'top': '286px', 'opacity': 1 }
     });
 
-    var to_bday_discover = TweenMax.to($('#adapt-feature-discover'), 1, { css: { 'opacity': 1, 'marginTop': ((is_us) ? '44px' : '0px') } });
+    var to_feature_discover = TweenMax.to($('#adapt-feature-discover'), 1, { css: { 'opacity': 1, 'marginTop': ((isUS) ? '44px' : '0px') } });
 
     controller.addTween(
       $cafe_hook,// execute tween when this element is visible
-      to_cafe_type,// tween to execute
+      to_feature_type,// tween to execute
       150,// scroll duration (px) of tween
       425// offset of tween (start 425 pixels after $cafe_hook comes in to viewport)
     );
-    controller.addTween($cafe_hook, to_cafe_results, 150, 700);
+    controller.addTween($cafe_hook, to_feature_results, 150, 700);
 
-    controller.addTween($bday_hook, to_bday_save, 250, 400);
-    controller.addTween($bday_hook, to_bday_discover, 225, 550);
+    controller.addTween($soccer_hook, to_feature_save, 250, 400);
+    controller.addTween($soccer_hook, to_feature_discover, 225, 550);
 
     // if en-US, show sprites
-    if (is_us) {
-      controller.addTween($cafe_hook, to_cafe_blue_line, 250, 250);
-      controller.addTween($cafe_hook, to_cafe_orange_line, 250, 550);
+    if (isUS) {
+      controller.addTween($cafe_hook, to_blue_line, 250, 250);
+      controller.addTween($cafe_hook, to_orange_line, 250, 550);
 
-      controller.addTween($bday_hook, to_bday_plus, 200, 525);
+      controller.addTween($soccer_hook, to_feature_plus, 200, 525);
     }
 
     // position fox tail tip when have it all comes in to view
@@ -640,6 +626,13 @@
         }
       },{ offset: '100%' }
     );
+
+    $('#keep-scrolling').click(function(e) {
+      e.preventDefault();
+
+      //track GA event for monitoring if users are clicking on animated scroller
+      trackGAEvent(['_trackEvent', 'FxOs Consumer Page', 'click', 'Adaptive animated scroll arrows']);
+    });
   }
 
   function trackGAPageNoScroll () {
@@ -672,6 +665,16 @@
     });
     $('#mission').waypoint(function () {
       trackGAEvent(['_trackEvent', 'FxOs Consumer Page', 'scroll', 'Transform the Future']);
+    });
+  }
+
+  // track clicks on plus sprite (only visible for US on tablet & larger)
+  if (isUS && !isSmallViewport) {
+    var click_event = (isTouch) ? "touchend" : "click";
+
+    $('#adapt-feature-sprite-plus').on(click_event, function(e) {
+      e.preventDefault();
+      trackGAEvent(['_trackEvent', 'FxOs Consumer Page', 'click', 'Adaptive sprite plus']);
     });
   }
 
