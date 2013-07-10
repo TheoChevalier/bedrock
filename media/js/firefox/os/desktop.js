@@ -76,7 +76,7 @@
     $(function() {
       setTimeout(function() {
         _handle_hash();
-      }, 350);
+      }, 60);
     });
 
     $w.on('hashchange', function() {
