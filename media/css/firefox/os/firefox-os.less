@@ -465,6 +465,17 @@ section p, header p {
         z-index: 1;
       }
     }
+    
+    #fox-tail-tip {
+      display: block;
+      position: fixed;
+      bottom: -45px;
+      right: 0;
+      width: 604px;
+      height: 45px;
+      background: url('/media/img/firefox/os/adapt/fox-tail-tip.png') top right no-repeat;
+      z-index: 5;
+    }
   }
   // placeholders for scroll position based animations
   #scene-hooks {
@@ -476,17 +487,6 @@ section p, header p {
 
   .scene-hook {
     background: transparent;
-  }
-
-  #fox-tail-tip {
-    display: block;
-    position: fixed;
-    bottom: -45px;
-    right: 0;
-    width: 604px;
-    height: 45px;
-    background: url('/media/img/firefox/os/adapt/fox-tail-tip.png') top right no-repeat;
-    z-index: 5;
   }
 }
 
@@ -998,6 +998,7 @@ html[lang=hu] {
       }
       #photos-edit-app {
         margin-top: 80px;
+        opacity: 0;
       }
       #mail-app {
         top: -270px;

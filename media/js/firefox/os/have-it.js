@@ -112,7 +112,7 @@
                 TweenMax.to($contactsApp, 2, {css: {top: '560px'}}),
                 TweenMax.from($mapsApp, 2, {css: {top: '350px'}}),
                 TweenMax.to($mapsApp, 2, {css: {top: '560px'}}),
-                TweenMax.to($landingHeading, 2, {css: {marginLeft: '-200%'}})
+                TweenMax.to($landingHeading, 2, {css: {marginLeft: '-200%', opacity: 0}})
             ])
             .add([
                 TweenMax.to($socialLeftContent, 2, {css: {marginLeft: 0, opacity: 1}}),
