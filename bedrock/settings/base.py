@@ -126,6 +126,9 @@ MINIFY_BUNDLES = {
         'responsive': (
             'css/sandstone/sandstone-resp.less',
         ),
+        'oldIE': (
+            'css/sandstone/oldIE.less',
+        ),
         'newsletter': (
             'css/newsletter/newsletter.less',
         ),
@@ -282,6 +285,9 @@ MINIFY_BUNDLES = {
         ),
         'firefox_sync': (
             'css/firefox/sync.less',
+        ),
+        'firefox_sync_anim': (
+            'css/firefox/sync-animation.less',
         ),
         'installer_help': (
             'css/base/mozilla-modal.less',
@@ -569,6 +575,9 @@ MINIFY_BUNDLES = {
         ),
         'firefox_speed': (
             'js/firefox/speed.js',
+        ),
+        'firefox_sync': (
+            'js/firefox/sync.js',
         ),
         'firefox_tech': (
             'js/firefox/technology/tech.js',
