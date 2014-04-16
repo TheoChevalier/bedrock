@@ -389,13 +389,18 @@ html[lang="en-US"], html[lang="en-UK"] {
     #speed-chrome-rank,
     #speed-ie10-rank,
     #speed-opera-rank {
+<<<<<<< HEAD
         //width: 0;
         width: 10%; // temporary to make .score animation visible
+=======
+        width: 0;
+>>>>>>> upstream/bug-975156-fx-desktop-pages
         background: #bcc6d1;
     }
 
     &.animate {
         .score {
+<<<<<<< HEAD
             // this work in all browsers
             .animation(revealRankScore 0.2s ease-in 0.7s 1 normal forwards);
         }
@@ -418,6 +423,27 @@ html[lang="en-US"], html[lang="en-UK"] {
         }
         #speed-opera-rank {
             .animation(expandOperaRank 0.3s ease-out 0 1 normal forwards);
+=======
+            .animation(revealRankScore 0.2s ease-in 0.7s 1 normal forwards);
+        }
+
+        #speed-fx-rank {
+            // use throw away variable to get past comma issue
+            @animation: expandFxRank 0.7s ease-out 0s 1 normal forwards, colorFxRank 0.3s ease-in 0.9s 1 normal forwards;
+            .animation(@animation);
+        }
+        #speed-opera-next-rank {
+            .animation(expandOperaNextRank 0.6s ease-out 0s 1 normal forwards);
+        }
+        #speed-chrome-rank {
+            .animation(expandChromeRank 0.6s ease-out 0s 1 normal forwards);
+        }
+        #speed-ie10-rank {
+            .animation(expandIE10Rank 0.4s ease-out 0s 1 normal forwards);
+        }
+        #speed-opera-rank {
+            .animation(expandOperaRank 0.3s ease-out 0s 1 normal forwards);
+>>>>>>> upstream/bug-975156-fx-desktop-pages
         }
     }
 }

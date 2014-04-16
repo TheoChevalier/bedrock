@@ -26,7 +26,11 @@
         font-size: 18px;
     }
 
+<<<<<<< HEAD
     img {
+=======
+    #designed-desktop {
+>>>>>>> upstream/bug-975156-fx-desktop-pages
         position: absolute;
         right: -20px;
         top: -34px;
@@ -37,6 +41,13 @@
         width: 380px;
         text-align: left;
     }
+<<<<<<< HEAD
+=======
+
+    #designed-mobile {
+        display: none;
+    }
+>>>>>>> upstream/bug-975156-fx-desktop-pages
 }
 
 #customize {
@@ -450,14 +461,29 @@
             min-height: 0;
         }
 
+<<<<<<< HEAD
         img {
             display: none;
         }
 
+=======
+>>>>>>> upstream/bug-975156-fx-desktop-pages
         #designed-copy {
             width: auto;
             text-align: center;
         }
+<<<<<<< HEAD
+=======
+
+        #designed-desktop {
+            display: none;
+        }
+
+        #designed-mobile {
+            display: block;
+            margin: (@baseLine * 2) auto 0;
+        }
+>>>>>>> upstream/bug-975156-fx-desktop-pages
     }
 
     #customize {
@@ -466,14 +492,37 @@
 
     #main-content .customizer .container {
         min-height: 0;
+<<<<<<< HEAD
         padding-bottom: @baseLine * 2;
+=======
+        padding-top: 180px;
+        padding-bottom: @baseLine * 2;
+        background-image: url(/media/img/firefox/desktop/customize/sprite-customizers.png);
+        background-repeat: no-repeat;
+>>>>>>> upstream/bug-975156-fx-desktop-pages
     }
 
     .customizer-visual {
         display: none;
     }
 
+<<<<<<< HEAD
     #add-ons {
+=======
+    #themes {
+        padding-top: @baseLine * 2;
+
+        .container {
+            background-position: 139px -438px;
+        }
+    }
+
+    #add-ons {
+        .container {
+            background-position: -220px -438px;
+        }
+
+>>>>>>> upstream/bug-975156-fx-desktop-pages
         .customizer-copy {
             width: auto;
         }
@@ -487,6 +536,13 @@
         }
     }
 
+<<<<<<< HEAD
+=======
+    #awesome-bar .container {
+        background-position: -579px -438px;
+    }
+
+>>>>>>> upstream/bug-975156-fx-desktop-pages
     .js {
         #customizers-wrapper {
             height: auto;
@@ -525,3 +581,33 @@
         }
     }
 }
+<<<<<<< HEAD
+=======
+
+/****************************************************************************/
+// @High resolution images for @retina-type displays
+// Mobile
+@media only screen and (max-width: @breakTablet) and (-webkit-min-device-pixel-ratio: 1.5),
+       only screen and (max-width: @breakTablet) and (                min-resolution: 1.5dppx),
+       only screen and (max-width: @breakTablet) and (                min-resolution: 144dpi) {
+
+    #main-content .customizer .container {
+        background-image: url(/media/img/firefox/desktop/customize/sprite-customizers-hires.png);
+        background-size: 1080px 600px;
+    }
+}
+
+@media (max-width: @breakMobileLandscape) {
+    #themes .container {
+        background-position: 69px -438px;
+    }
+
+    #add-ons .container {
+        background-position: -291px -438px;
+    }
+
+    #awesome-bar .container {
+        background-position: -651px -438px;
+    }
+}
+>>>>>>> upstream/bug-975156-fx-desktop-pages

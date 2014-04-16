@@ -14,7 +14,10 @@
 {% block body_id %}firefox-desktop-fast{% endblock %}
 
 {% block content %}
+<<<<<<< HEAD
 
+=======
+>>>>>>> upstream/bug-975156-fx-desktop-pages
 <main role="main" id="main-content">
   <section id="intro">
     <div class="container">
@@ -30,6 +33,7 @@
       <h3>{{ _('The “speed king”') }}</h3>
 
       <p>
+<<<<<<< HEAD
       {% if request.locale == 'fr' %}
 
         {# L10n: Line break below is for wide screen formatting only. #}
@@ -58,6 +62,12 @@
           Firefox outperformed other browsers in recent independent tests to be named <br class="wide-br">the <a href="{{ url1 }}">“speed king.”</a>
         {% endtrans %}
       {% endif %}
+=======
+      {# L10n: Line break below is for wide screen formatting only. #}
+      {% trans url1='http://www.tomshardware.com/reviews/chrome-27-firefox-21-opera-next,3534.html' %}
+        Firefox outperformed other browsers in recent independent tests to be named <br class="wide-br">the <a href="{{ url1 }}">“speed king.”</a>
+      {% endtrans %}
+>>>>>>> upstream/bug-975156-fx-desktop-pages
         {{ _('So you can browse with confidence with the fastest on the Web.') }}
       </p>
     </div>
