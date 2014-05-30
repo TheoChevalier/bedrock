@@ -33,7 +33,8 @@ TAG_REGEX = re.compile(r"^## (\w+) ##")
 cache = get_cache('l10n')
 
 
-def parse(path, skip_untranslated=True, extract_comments=False):
+def parse(path, skip_untranslated=True, extract_comments=False,
+        replace_quotes=False):
     """
     Parse a dotlang file and return a dict of translations.
     :param path: Absolute path to a lang file.
@@ -72,6 +73,8 @@ def parse(path, skip_untranslated=True, extract_comments=False):
                 line = line.strip()
                 if skip_untranslated and source == line:
                     continue
+                if replace_quotes:
+                    line = line.replace("\x27", u"\u2019")
                 if extract_comments:
                     trans[source] = [comment, line]
                     comment = None
@@ -114,7 +117,8 @@ def translate(text, files):
         trans = cache.get(key)
         if trans is None:
             path = os.path.join(settings.ROOT, rel_path)
-            trans = parse(path)
+            trans = parse(path,
+                replace_quotes=(lang in settings.LANGUAGES_PRETTY_QUOTES))
             cache.set(key, trans, settings.DOTLANG_CACHE)
 
         if tweaked_text in trans:
